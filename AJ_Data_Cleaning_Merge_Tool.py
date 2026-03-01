@@ -3,6 +3,7 @@ import streamlit as st
 from io import BytesIO
 import numpy as np
 
+
 report = {
     "rows_before": 0,
     "rows_after": 0,
@@ -99,6 +100,31 @@ def clean_numeric_strings(df):
             df[col] = converted
     
     return df
+def save_cleaned_df(df):
+    option = st.radio("Choose file format for cleaned file:", 
+                      ("csv", "excel", "json"), key="clean_download")
+
+    if option == "csv":
+        data = df.to_csv(index=False).encode("utf-8")
+        st.download_button("Download Cleaned CSV",
+                           data,
+                           "cleaned_data.csv",
+                           "text/csv")
+
+    elif option == "excel":
+        output = BytesIO()
+        df.to_excel(output, index=False)
+        st.download_button("Download Cleaned Excel",
+                           output.getvalue(),
+                           "cleaned_data.xlsx",
+                           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+    elif option == "json":
+        data = df.to_json(orient="records", indent=4).encode("utf-8")
+        st.download_button("Download Cleaned JSON",
+                           data,
+                           "cleaned_data.json",
+                           "application/json")
 
 def save_df(df):
     option = st.radio("Choose file format:", ("csv", "excel", "json"))
@@ -270,7 +296,7 @@ def main():
             # Download button
             st.subheader(
                 "⬇ Download Cleaned File",)
-            save_df(df)
+            save_cleaned_df(df)
 
         # call cleaning functions here
 
