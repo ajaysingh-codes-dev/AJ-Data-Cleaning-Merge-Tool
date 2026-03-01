@@ -96,7 +96,7 @@ def clean_numeric_strings(df):
         converted = pd.to_numeric(cleaned_series, errors="coerce")
         
         # Only replace column if conversion actually worked for most values
-        if converted.notna().sum() / len(df) > 0.8:
+        if converted.notna().sum() > 0:
     df[col] = converted
     
     return df
