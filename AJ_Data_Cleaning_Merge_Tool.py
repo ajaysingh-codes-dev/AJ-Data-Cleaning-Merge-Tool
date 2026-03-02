@@ -130,9 +130,9 @@ def run_cleaning_pipeline(df):
 
     df = clean_column_names(df)
     df = trim_string_spaces(df, report)
+    df = remove_empty_rows_cols(df, report)
     df = remove_duplicates(df, report)
     df = clean_numeric_strings(df, report)
-    df = remove_empty_rows_cols(df, report)
     df = optimize_dtypes(df)
 
     report["rows_after"] = df.shape[0]
